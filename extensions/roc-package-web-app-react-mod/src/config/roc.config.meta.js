@@ -73,7 +73,7 @@ export default {
                 },
                 root: {
                     description: 'If the project template should be used as the root template instead of the default ' +
-                        'one. When true `parentTemplate` will be the main template in `roc-package-web-app-react`, ' +
+                        'one. When true `parentTemplate` will be the main template in `roc-package-web-app-react-mod`, ' +
                         'also called `baseTemplate`. Important that blocks are maintained for extensions to be able ' +
                         'to add their logic.',
                     validator: required(isBoolean),

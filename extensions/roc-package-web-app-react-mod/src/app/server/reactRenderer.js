@@ -37,7 +37,7 @@ function setupTemplate(devMode) {
         defaultTemplatePath
     ).map(path => getAbsolutePath(path));
 
-    const baseTemplate = 'roc-package-web-app-react/main.njk';
+    const baseTemplate = 'roc-package-web-app-react-mod/main.njk';
     let parentTemplate = rocConfig.runtime.template.root ?
         rocConfig.runtime.template.name :
         baseTemplate;

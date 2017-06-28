@@ -45,7 +45,7 @@ export default {
 
                 if (settings.build.resources.length > 0) {
                     const resources = settings.build.resources.map((resource) => {
-                        const matches = /^roc-package-web-app-react\/(.*)/.exec(resource);
+                        const matches = /^roc-package-web-app-react-mod\/(.*)/.exec(resource);
                         if (matches && matches[1]) {
                             return path.join(rocPackageWebAppReact.path, `/${matches[1]}`);
                         }

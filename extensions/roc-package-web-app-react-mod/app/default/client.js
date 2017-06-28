@@ -5,7 +5,7 @@ import getRoutesAndStore from './get-routes-and-store';
 const { store, routes, routerMiddlewareConfig } = getRoutesAndStore();
 
 createClient({
-    createRoutes: routes,
+    routes,
     createStore: store,
     mountNode: 'application',
     routerMiddlewareConfig,

@@ -24,7 +24,7 @@ export default {
 
             clientLoading: undefined,
             // Consider using the init function to merge this with the previous
-            resources: ['roc-package-web-app-react/styles/base.css'],
+            resources: ['roc-package-web-app-react-mod/styles/base.css'],
 
             templateValues: 'src/template-values.js',
         },

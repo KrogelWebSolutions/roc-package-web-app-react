@@ -46,15 +46,19 @@ function compose(funcs) {
  * @param {rocClientOptions} options - Options for the client
  */
 export default function createClient({
-    createRoutes,
+    routes,
     createStore,
     mountNode,
     routerMiddlewareConfig,
 }) {
-    if (!createRoutes) {
-        throw new Error('createRoutes needs to be defined');
-    }
+    // if (!createRoutes) {
+    //     throw new Error('createRoutes needs to be defined');
+    // }
 
+    //TODO: make routes optional - if no routes (or disabled), than don't add browser
+    if (!routes) {
+        throw new Error('routes needs to be defined');
+    }
     if (!mountNode) {
         throw new Error('mountNode needs to be defined');
     }
@@ -98,7 +102,7 @@ export default function createClient({
             initialLoading = require(ROC_CLIENT_LOADING).default;
         }
 
-        let routes;
+        // let routes;
         // let locals = {
         //     history,
         // };
@@ -108,9 +112,7 @@ export default function createClient({
         if (HAS_REDUX_REDUCERS && createStore) {
             const { Provider } = require('react-redux');
             // const { syncHistoryWithStore } = require('react-router-redux');
-
-            const store = createStore(history, window.FLUX_STATE);
-
+            const store = createStore(history, window.FLUX_STATE);//<<PROBLEM!!!!!!!!!!!!
             if (HAS_REDUX_SAGA) {
                 store.runSaga(require(REDUX_SAGAS).default);
             }
@@ -121,8 +123,7 @@ export default function createClient({
             //     // to redirect loops https://github.com/reactjs/react-router-redux/issues/285
             //     adjustUrlOnReplay: supportsHistory(),
             // });
-
-            routes = createRoutes(store);
+            // routes = createRoutes(store);
             // locals = {
             //     dispatch: store.dispatch,
             //     getState: store.getState,
@@ -152,7 +153,7 @@ export default function createClient({
             //     }
             // }
         } else {
-            routes = createRoutes();
+            // routes = createRoutes();
         }
 
         if (__DEV__ && rocConfig.dev.yellowbox.enabled) {
@@ -208,7 +209,9 @@ export default function createClient({
         // const supportsHistory = 'pushState' in window.history;
 
         const finalComponent = compose(createComponent)(
-            <BrowserRouter forceRefresh={!supportsHistory()}/>
+            <BrowserRouter forceRefresh={!supportsHistory()}>
+                {routes}
+            </BrowserRouter>
         );
 
         ReactDOM.render(finalComponent, node);

@@ -43,6 +43,7 @@ export default function getRoutesAndStore() {
 
         let replaceReducers = null;
         if (__WEB__) {
+
             replaceReducers = (replaceReducer) => {
                 module.hot.accept(require.resolve(REDUX_REDUCERS), () => {
                     replaceReducer({
@@ -52,20 +53,17 @@ export default function getRoutesAndStore() {
                 });
             };
         }
-
         store = storeCreator(replaceReducers);
     }
-
     const { default: projectRoutes, middlewareConfig = {} } = require(REACT_ROUTER_ROUTES);
-
     if (USE_DEFAULT_REACT_ROUTER_ROUTES) {
-        const { createRoutes } = require('../shared');
-
+        const { createRoutes } = require('../shared');//<!------NOT A FUNCTION
+        console.log(createRoutes, '* createRoutes *');
+        console.log(projectRoutes, '* projectRoutes *');
         routes = createRoutes(projectRoutes);
     } else {
         routes = require(REACT_ROUTER_ROUTES).default;
     }
-
     return {
         routerMiddlewareConfig: {
             // 'react-router-scroll-async': {},

@@ -1,7 +1,7 @@
 /* global __DIST__, __DEV__ HAS_TEMPLATE_VALUES, TEMPLATE_VALUES, ROC_PATH, HAS_REDUX_SAGA, REDUX_SAGAS,
  I18N_LOCALES, USE_I18N_POLYFILL */
 
-import useReactLib from 'roc-package-web-app-react/lib/app/server/useReact';
+import useReactLib from 'roc-package-web-app-react-mod/lib/app/server/useReact';
 
 import Header from '../shared/header';
 import getRoutesAndStore from '../default/get-routes-and-store';

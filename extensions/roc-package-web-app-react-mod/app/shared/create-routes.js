@@ -41,7 +41,7 @@ export const createRoutes = (routes) => {
         <Route key={i} {...b} />
       </Application>
     );
-})
+});
 
   return (
     <Switch>

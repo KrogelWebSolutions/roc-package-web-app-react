@@ -22,7 +22,6 @@ export default function createReduxStore(reducers, middlewares = [], enhancers =
             let finalCreateStore;
             const normalMiddlewares = [].concat(middlewares);
             let sagaMiddleware;
-
             // redux-saga
             if (HAS_REDUX_SAGA) {
                 const createSagaMiddleware = require('redux-saga').default; // eslint-disable-line
@@ -33,6 +32,8 @@ export default function createReduxStore(reducers, middlewares = [], enhancers =
             // Add the react-router-redux middleware
             // normalMiddlewares.push(routerMiddleware(history));
 
+            //initialise composeEnhancers as redux's default compose
+            let composeEnhancers = compose;
             if (__DEV__ && __WEB__) {
                 // const { persistState } = require('redux-devtools'); // eslint-disable-line
                 const createLogger = require('redux-logger'); // eslint-disable-line
@@ -40,35 +41,34 @@ export default function createReduxStore(reducers, middlewares = [], enhancers =
 
                 const debugMiddlewares = [logger];
 
-                let devTools = (input) => input;
+                // let devTools = (input) => input;
                 if (rocConfig.dev.redux.devTools.enabled) {
                     // devTools = window.devToolsExtension
                     //     ? window.devToolsExtension()
                     //     // eslint-disable-next-line
                     //     : require('../../client/dev-tools').default.instrument(rocConfig.dev.redux.devTools.instrument);
-                    devTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+                    // devTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+                    composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
                 }
-
-                finalCreateStore = compose(
+                finalCreateStore = composeEnhancers(
                     applyMiddleware(...normalMiddlewares, ...debugMiddlewares),
-                    devTools,
+                    // devTools,
                     // persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
                     ...enhancers
                 )(createStore);
             } else {
-                finalCreateStore = compose(
+                finalCreateStore = composeEnhancers(
                     applyMiddleware(...normalMiddlewares),
                     ...enhancers
                 )(createStore);
             }
-
+            // delete reducers['0'];
             const reducer = combineReducers({
                 // routing: routerReducer,
                 ...reducers,
             });
-
-            const store = finalCreateStore(reducer, initialState);
-
+            const store = finalCreateStore(reducer, initialState);//<<Seomething about this is breaking
+            // const store = createStore(reducer, initialState);//<<Temp fix
             if (__DEV__ && __WEB__ && module.hot) {
                 // Enable Webpack hot module replacement for reducers
                 callback((newReducers) => {
